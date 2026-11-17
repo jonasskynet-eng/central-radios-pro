@@ -1,0 +1,10 @@
+{
+  "name": "RádioPro Brasil - Central de Rádios & Som Ambiente",
+  "short_name": "RádioPro",
+  "description": "Central de rádios FM brasileiras ao vivo para carro, celular e som ambiente comercial.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090b0f",
+  "theme_color": "#090b0f",
+  "orientation": "portrait-primary"
+}
