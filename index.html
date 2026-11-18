@@ -964,13 +964,30 @@
                 })
                 .then(r => r.ok ? r.json() : null)
                 .then(data => {
-                    if (data && data.permitido === false && !bloqueioExibido) {
+                    if (!data) return;
+                    if (data.permitido === false && !bloqueioExibido) {
                         bloqueioExibido = true;
+                        const bPre = document.getElementById('bannerPreExpiracao');
+                        if (bPre) bPre.remove();
                         try { const a = document.getElementById('audioPlayer'); if (a) a.pause(); } catch (_) {}
                         const aviso = document.createElement('div');
                         aviso.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0c0e12;color:#f3f5f8;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:system-ui,sans-serif;';
                         aviso.innerHTML = '<div style="max-width:440px;background:#151922;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:28px;box-shadow:0 12px 40px rgba(0,0,0,0.6);"><div style="font-size:36px;margin-bottom:8px;">⏳</div><h2 style="font-size:20px;margin-bottom:10px;">Tempo de Acesso Encerrado</h2><p style="color:#98a3b6;font-size:14px;line-height:1.5;margin-bottom:20px;">' + (data.motivo || 'Seu período de teste terminou! Chame o Jonas no WhatsApp para liberar seu acesso.') + '</p><a href="https://wa.me/5511966707293?text=' + encodeURIComponent('Olá, Jonas! Meu período de teste terminou e quero ativar meu acesso.') + '" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#34d399;color:#06281c;font-weight:800;padding:13px 24px;border-radius:10px;text-decoration:none;font-size:15px;box-shadow:0 4px 14px rgba(52,211,153,0.35);">💬 Chamar Jonas no WhatsApp</a></div>';
                         document.body.appendChild(aviso);
+                    } else if (data.aviso_pre && !bloqueioExibido) {
+                        let banner = document.getElementById('bannerPreExpiracao');
+                        const sRest = Number(data.aviso_pre.restante_seg || 0);
+                        const min = Math.max(1, Math.ceil(sRest / 60));
+                        const tempoTxt = min > 60 ? (Math.floor(min / 60) + 'h ' + (min % 60) + 'min') : (min + ' min');
+                        if (!banner) {
+                            banner = document.createElement('div');
+                            banner.id = 'bannerPreExpiracao';
+                            banner.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9998;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f131a;padding:10px 18px;border-radius:99px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);font-family:system-ui,sans-serif;';
+                            document.body.appendChild(banner);
+                        }
+                        banner.innerHTML = '<span>⚠️ Teste acaba em <strong>' + tempoTxt + '</strong>!</span>'
+                            + '<a href="https://wa.me/5511966707293?text=' + encodeURIComponent('Olá Jonas! Meu teste termina em ' + tempoTxt + ' e quero garantir meu acesso.') + '" target="_blank" style="background:#0c0e12;color:#34d399;font-weight:800;padding:6px 14px;border-radius:99px;text-decoration:none;font-size:12px;">💬 Chamar no WhatsApp ↗</a>'
+                            + '<button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:15px;color:#0f131a;padding:0 4px;font-weight:bold;" title="Dispensar aviso">✕</button>';
                     }
                 })
                 .catch(() => {});
