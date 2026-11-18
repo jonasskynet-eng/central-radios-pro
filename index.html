@@ -920,6 +920,70 @@
         const ultimaId = parseInt(localStorage.getItem(CHAVE_ULTIMA) || '', 10);
         const startIdx = Number.isFinite(ultimaId) ? Math.max(0, radios.findIndex(r => r.id === ultimaId)) : 0;
         sintonizarRadio(startIdx, false, false);
+
+        // Telemetria leve: registra IP, rádio atual, tempo conectado e chave de acesso
+        (function iniciarTelemetriaRadio() {
+            const URL_PING = 'https://cinepro-tv-proxy.jonasskynet.workers.dev/ping';
+            const paramsUrl = new URLSearchParams(window.location.search);
+            let chave = (paramsUrl.get('chave') || '').trim().toUpperCase();
+            try {
+                if (chave) localStorage.setItem('radiopro_chave_cliente', chave);
+                else chave = (localStorage.getItem('radiopro_chave_cliente') || '').trim().toUpperCase();
+            } catch (_) {}
+
+            let sessaoId = '';
+            try {
+                sessaoId = sessionStorage.getItem('radiopro_sessao_id') || '';
+                if (!sessaoId) {
+                    sessaoId = 'rad-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+                    sessionStorage.setItem('radiopro_sessao_id', sessaoId);
+                }
+            } catch (_) {
+                sessaoId = 'rad-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+            }
+
+            let bloqueioExibido = false;
+            function montarPayload() {
+                const radioAtual = (typeof radios !== 'undefined' && radios[atualIdx])
+                    ? radios[atualIdx].nome
+                    : 'Catálogo de Rádios';
+                return JSON.stringify({
+                    sessao_id: sessaoId,
+                    app: 'radiopro',
+                    item_atual: radioAtual,
+                    chave_cliente: chave || 'VISITANTE'
+                });
+            }
+
+            function enviarPing() {
+                if (window.location.protocol === 'file:') return;
+                fetch(URL_PING, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: montarPayload()
+                })
+                .then(r => r.ok ? r.json() : null)
+                .then(data => {
+                    if (data && data.permitido === false && !bloqueioExibido) {
+                        bloqueioExibido = true;
+                        try { const a = document.getElementById('audioPlayer'); if (a) a.pause(); } catch (_) {}
+                        const aviso = document.createElement('div');
+                        aviso.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0c0e12;color:#f3f5f8;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:system-ui,sans-serif;';
+                        aviso.innerHTML = '<div style="max-width:420px;background:#151922;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:26px;"><h2 style="margin-bottom:10px;">Acesso Pausado</h2><p style="color:#98a3b6;font-size:14px;margin-bottom:18px;">' + (data.motivo || 'Chave bloqueada ou em uso em outro aparelho.') + '</p><a href="https://wa.me/5511966707293" target="_blank" style="display:inline-block;background:#34d399;color:#06281c;font-weight:700;padding:10px 18px;border-radius:8px;text-decoration:none;">Falar com Jonas no WhatsApp</a></div>';
+                        document.body.appendChild(aviso);
+                    }
+                })
+                .catch(() => {});
+            }
+
+            setTimeout(enviarPing, 2000);
+            setInterval(enviarPing, 45000);
+            window.addEventListener('pagehide', () => {
+                if (navigator.sendBeacon && window.location.protocol !== 'file:') {
+                    navigator.sendBeacon(URL_PING, montarPayload());
+                }
+            });
+        })();
     </script>
 </body>
 </html>
