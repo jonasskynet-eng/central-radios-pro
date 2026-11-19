@@ -692,15 +692,17 @@
         </section>
 
         <div class="toolbar">
-            <input type="search" id="searchInput" class="search-input" placeholder="🔍 Buscar rádio por nome, cidade ou estilo (ex: rock, sertanejo, news)...">
+            <input type="search" id="searchInput" class="search-input" placeholder="🔍 Buscar rádio por nome, cidade ou estilo (ex: academia, dance, rock, news)...">
             <select id="styleFilter" class="select-filter" aria-label="Filtrar por estilo">
-                <option value="all">📻 Todos os Estilos</option>
+                <option value="all">📻 Todos os Estilos (38+ Rádios)</option>
                 <option value="fav">⭐ Favoritas</option>
-                <option value="Jornalismo">📰 Jornalismo</option>
+                <option value="Academia & Treino">🏋️ Academia & Treino Agitado</option>
                 <option value="Pop & Hits">🎵 Pop & Hits</option>
                 <option value="Rock & Flashback">🎸 Rock & Flashback</option>
-                <option value="MPB & Brasil">🎷 MPB & Brasil</option>
                 <option value="Sertanejo & Popular">🤠 Sertanejo & Forró</option>
+                <option value="Lo-Fi & Relax">☕ Lo-Fi & Relax Lounge</option>
+                <option value="MPB & Brasil">🎷 MPB & Brasil</option>
+                <option value="Jornalismo">📰 Jornalismo</option>
                 <option value="Gospel">⛪ Gospel</option>
             </select>
         </div>
@@ -717,10 +719,12 @@
             <input type="text" id="customName" class="modal-input" placeholder="Nome da rádio (ex: Rádio da Cidade 98.1)">
             <input type="url" id="customUrl" class="modal-input" placeholder="Link HTTPS (.mp3, .aac ou .m3u8)">
             <select id="customStyle" class="modal-input">
+                <option value="Academia & Treino">🏋️ Academia & Treino Agitado</option>
                 <option value="Pop & Hits">🎵 Pop & Hits</option>
                 <option value="Jornalismo">📰 Jornalismo</option>
                 <option value="Rock & Flashback">🎸 Rock & Flashback</option>
                 <option value="Sertanejo & Popular">🤠 Sertanejo & Forró</option>
+                <option value="Lo-Fi & Relax">☕ Lo-Fi & Relax Lounge</option>
                 <option value="MPB & Brasil">🎷 MPB & Brasil</option>
                 <option value="Gospel">⛪ Gospel</option>
             </select>
@@ -878,7 +882,17 @@
             { id: 25, freq: "WEB", unit: "HLS", nome: "Rádio Forró Vagalume", cidade: "Brasil • 24h", estilo: "Sertanejo & Popular", url: "https://stream.vagalume.fm/hls/147015501223418/aac.m3u8", res: "" },
             { id: 26, freq: "97.5", unit: "FM", nome: "Melodia FM", cidade: "Rio de Janeiro, RJ", estilo: "Gospel", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/MELODIAFMAAC_SC", res: "https://playerservices.streamtheworld.com/api/livestream-redirect/MELODIAFMAAC.aac" },
             { id: 27, freq: "93.3", unit: "FM", nome: "Rádio 93 FM", cidade: "Rio de Janeiro, RJ", estilo: "Gospel", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/FM93_SC", res: "" },
-            { id: 28, freq: "92.9", unit: "FM", nome: "Feliz FM", cidade: "São Paulo, SP", estilo: "Gospel", url: "https://streaming.fox.srv.br:8140/stream/1/", res: "" }
+            { id: 28, freq: "92.9", unit: "FM", nome: "Feliz FM", cidade: "São Paulo, SP", estilo: "Gospel", url: "https://streaming.fox.srv.br:8140/stream/1/", res: "" },
+            { id: 29, freq: "EDM", unit: "FIT", nome: "Workout EDM Energy 98", cidade: "Global Dance • 24h", estilo: "Academia & Treino", url: "https://listen.181fm.com/181-energy98_128k.mp3", res: "" },
+            { id: 30, freq: "CLUB", unit: "FIT", nome: "Dance Wave High Energy", cidade: "Brasil & Club • 24h", estilo: "Academia & Treino", url: "https://stream1.dancewave.online:8082/dance.mp3", res: "" },
+            { id: 31, freq: "POP", unit: "FIT", nome: "Power 181 Pop Workout", cidade: "Top 40 Hits • 24h", estilo: "Academia & Treino", url: "https://listen.181fm.com/181-power_128k.mp3", res: "" },
+            { id: 32, freq: "BEAT", unit: "FIT", nome: "Hip-Hop & Trap Workout", cidade: "Workout Bass • 24h", estilo: "Academia & Treino", url: "https://listen.181fm.com/181-beat_128k.mp3", res: "" },
+            { id: 33, freq: "HOUSE", unit: "FIT", nome: "Hunter Tropical House", cidade: "Brasil • 24h", estilo: "Academia & Treino", url: "https://live.hunter.fm/tropical_high", res: "" },
+            { id: 34, freq: "ROCK", unit: "FIT", nome: "Hard Rock Workout", cidade: "Heavy Energy • 24h", estilo: "Academia & Treino", url: "https://listen.181fm.com/181-hardrock_128k.mp3", res: "" },
+            { id: 35, freq: "FUNK", unit: "FIT", nome: "Vagalume Funk Fitness", cidade: "Batidão Treino • 24h", estilo: "Academia & Treino", url: "https://stream.vagalume.fm/hls/1470154922349875/index.m3u8", res: "" },
+            { id: 36, freq: "2000s", unit: "PRO", nome: "Hunter Pop 2000s Hype", cidade: "Brasil • 24h", estilo: "Pop & Hits", url: "https://live.hunter.fm/pop2k_high", res: "" },
+            { id: 37, freq: "SAMBA", unit: "PRO", nome: "Hunter Pagode Brasil", cidade: "Brasil • 24h", estilo: "Sertanejo & Popular", url: "https://live.hunter.fm/pagode_high", res: "" },
+            { id: 38, freq: "LOFI", unit: "ZEN", nome: "Hunter Lo-Fi Relax & Foco", cidade: "Lounge & Foco • 24h", estilo: "Lo-Fi & Relax", url: "https://live.hunter.fm/lofi_high", res: "" }
         ];
 
         const CHAVE_FAV = 'radiopro_favs_v1';
@@ -1452,7 +1466,14 @@
                 .map((r, i) => ({ r, i }))
                 .filter(({ r }) => {
                     if (est === 'fav' && !favoritos.includes(r.id)) return false;
-                    if (est !== 'all' && est !== 'fav' && r.estilo !== est) return false;
+                    if (est !== 'all' && est !== 'fav') {
+                        if (est === 'Academia & Treino') {
+                            const ehAcademia = r.estilo === 'Academia & Treino' || r.nome.includes('Energia 97') || r.nome.includes('Funk') || r.nome.includes('Metropolitana');
+                            if (!ehAcademia) return false;
+                        } else if (r.estilo !== est) {
+                            return false;
+                        }
+                    }
                     if (q && !`${r.nome} ${r.cidade} ${r.estilo} ${r.freq}`.toLowerCase().includes(q)) return false;
                     return true;
                 });
