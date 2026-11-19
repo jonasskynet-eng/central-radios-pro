@@ -429,6 +429,114 @@
             display: none !important;
         }
 
+        /* PAINEL DE BALCÃO E VINHETAS DO MODO LOJA */
+        .painel-loja-balcao {
+            display: none;
+            background: linear-gradient(145deg, #10151f, #151d2b);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+            animation: fadeIn 0.3s ease;
+        }
+        body.loja-mode .painel-loja-balcao {
+            display: block;
+        }
+        .loja-balcao-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .loja-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--emerald-dim);
+            color: var(--emerald);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 6px;
+        }
+        .loja-nome {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        .loja-relogio-box {
+            text-align: right;
+        }
+        .loja-relogio {
+            font-size: 32px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            color: #6ee7b7;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        .loja-data {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: capitalize;
+        }
+        .loja-vinheta-status-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-strong);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+        .loja-vinheta-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .badge-vinheta-pulso {
+            color: var(--emerald);
+            font-size: 20px;
+            line-height: 1;
+            animation: pulsoVerde 1.5s infinite;
+        }
+        @keyframes pulsoVerde {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+        .loja-vinheta-titulo {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .loja-vinheta-titulo strong {
+            color: var(--amber);
+            font-size: 16px;
+            font-variant-numeric: tabular-nums;
+        }
+        .loja-vinheta-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .loja-vinheta-botoes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         /* MODAL SIMPLES PARA ADICIONAR RÁDIO PRÓPRIA */
         .modal-bg {
             display: none;
@@ -518,6 +626,7 @@
                 </div>
             </div>
             <div class="header-actions">
+                <button type="button" class="btn" id="btnLojaConfig" onclick="abrirModalVinhetas()" title="Configurar Vinhetas e Locutor da Loja">📢 Vinhetas</button>
                 <button type="button" class="btn" id="btnAddRadio" onclick="abrirModalRadio()">➕ Adicionar</button>
                 <button type="button" class="btn" id="btnSleep" onclick="alternarSleep()">🌙 <span id="sleepText">Dormir</span></button>
                 <button type="button" class="btn" id="btnLojaMode" onclick="alternarModoLoja()" title="Trava a tela para som ambiente em lojas">🏪 Modo Loja</button>
@@ -549,6 +658,35 @@
                 <div class="volume-box">
                     <button type="button" id="btnMute" onclick="alternarMudo()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:15px;" title="Mudo">🔊</button>
                     <input type="range" id="volRange" class="volume-slider" min="0" max="100" value="85" aria-label="Volume">
+                </div>
+            </div>
+        </section>
+
+        <!-- PAINEL DE BALCÃO E VINHETAS AUTOMÁTICAS (MODO LOJA ATIVO) -->
+        <section class="painel-loja-balcao" id="painelLojaBalcao">
+            <div class="loja-balcao-head">
+                <div class="loja-dados">
+                    <div class="loja-tag">🏪 SOM AMBIENTE COMERCIAL ATIVO</div>
+                    <h2 class="loja-nome" id="lblNomeLoja">Minha Loja • Rádio Corporativa</h2>
+                </div>
+                <div class="loja-relogio-box">
+                    <div class="loja-relogio" id="relogioLoja">--:--:--</div>
+                    <div class="loja-data" id="dataLoja">Carregando data...</div>
+                </div>
+            </div>
+            
+            <div class="loja-vinheta-status-card">
+                <div class="loja-vinheta-info">
+                    <span class="badge-vinheta-pulso" id="badgeVinhetaPulso">●</span>
+                    <div>
+                        <div class="loja-vinheta-titulo" id="lblStatusVinheta">Próximo anúncio da loja em: <strong id="timerProximaVinheta">15:00</strong></div>
+                        <div class="loja-vinheta-sub" id="lblSubVinheta">Locutor virtual ativo com atenuação suave do som de fundo</div>
+                    </div>
+                </div>
+                <div class="loja-vinheta-botoes">
+                    <button type="button" class="btn active" onclick="dispararVinhetaManual()" title="Disparar anúncio agora">📢 Tocar Anúncio Agora</button>
+                    <button type="button" class="btn" onclick="abrirModalVinhetas()" title="Configurar textos, intervalos e áudios">⚙️ Configurar</button>
+                    <button type="button" class="btn" onclick="alternarModoLoja()" style="border-color:#f43f5e; color:#f43f5e;" title="Sair do modo loja e voltar para a lista de rádios">🔓 Destravar Balcão</button>
                 </div>
             </div>
         </section>
@@ -587,6 +725,73 @@
                 <option value="Gospel">⛪ Gospel</option>
             </select>
             <button type="button" class="btn active" style="justify-content:center; padding:10px;" onclick="salvarRadioPropria()">💾 Salvar e Tocar Agora</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIGURAÇÃO DE VINHETAS E MODO LOJA -->
+    <div id="modalVinhetasLoja" class="modal-bg">
+        <div class="modal-card" style="max-width: 520px;">
+            <div class="modal-head">
+                <span style="display:flex;align-items:center;gap:8px;">📢 Vinhetas & Som de Loja</span>
+                <button type="button" onclick="fecharModalVinhetas()" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+            </div>
+            
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.45;">
+                Programe anúncios automáticos para tocar na sua loja. A música abaixa o som de fundo suavemente (*ducking*), a vinheta fala com clareza e o volume volta ao normal!
+            </div>
+
+            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:flex; flex-direction:column; gap:4px;">
+                Nome da Loja / Estabelecimento:
+                <input type="text" id="cfgLojaNome" class="modal-input" placeholder="Ex: Supermercado do Jonas, Barbearia Estilo..." value="Minha Loja • Rádio Corporativa">
+            </label>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:flex; flex-direction:column; gap:4px;">
+                    Intervalo dos Anúncios:
+                    <select id="cfgLojaIntervalo" class="modal-input">
+                        <option value="2">A cada 2 minutos (Teste)</option>
+                        <option value="5">A cada 5 minutos</option>
+                        <option value="10">A cada 10 minutos</option>
+                        <option value="15" selected>A cada 15 minutos (Padrão)</option>
+                        <option value="30">A cada 30 minutos</option>
+                        <option value="60">A cada 1 hora</option>
+                    </select>
+                </label>
+
+                <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:flex; flex-direction:column; gap:4px;">
+                    Volume de Fundo na Vinheta:
+                    <select id="cfgLojaDucking" class="modal-input">
+                        <option value="0.10">10% (Bem baixinho)</option>
+                        <option value="0.15" selected>15% (Recomendado)</option>
+                        <option value="0.25">25% (Médio)</option>
+                        <option value="0.0">0% (Mudo total)</option>
+                    </select>
+                </label>
+            </div>
+
+            <div style="border-top:1px solid var(--border); padding-top:12px;">
+                <div style="font-size:12px; font-weight:800; color:#34d399; margin-bottom:8px; display:flex; align-items:center; gap:6px;">🎙️ Locutor Virtual IA (Text-to-Speech Gratuito):</div>
+                
+                <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                    Mensagem 1 (Boas-vindas / Ofertas):
+                    <textarea id="cfgLojaMsg1" class="modal-input" rows="2" placeholder="Ex: Atenção clientes! Sejam muito bem-vindos. Aproveitem nossas ofertas especiais de hoje!"></textarea>
+                </label>
+
+                <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                    Mensagem 2 (Atendimento / Fidelidade):
+                    <textarea id="cfgLojaMsg2" class="modal-input" rows="2" placeholder="Ex: Qualquer dúvida, consulte nossa equipe de atendimento no balcão. Desejamos ótimas compras!"></textarea>
+                </label>
+                
+                <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px;">
+                    Ou Link de Áudio Próprio (.mp3 / URL de vinheta gravada):
+                    <input type="url" id="cfgLojaAudioUrl" class="modal-input" placeholder="https://seusite.com/vinheta.mp3 (Opcional)">
+                </label>
+            </div>
+
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
+                <button type="button" class="btn" onclick="testarVinhetaAgora()" style="border-color:#34d399; color:#34d399;">▶ Testar Vinheta Agora</button>
+                <button type="button" class="btn active" onclick="salvarConfigLoja()">💾 Salvar e Aplicar</button>
+            </div>
         </div>
     </div>
 
@@ -840,13 +1045,225 @@
             }
         }
 
+        // ==========================================
+        // SISTEMA DE VINHETAS AUTOMÁTICAS & MODO LOJA
+        // ==========================================
+        const CHAVE_CFG_LOJA = 'radiopro_loja_config_v1';
+        let cfgLoja = {
+            nome: 'Minha Loja • Rádio Corporativa',
+            intervaloMin: 15,
+            duckingVol: 0.15,
+            msg1: 'Atenção clientes! Sejam muito bem-vindos à nossa loja. Aproveitem nossas ofertas especiais de hoje!',
+            msg2: 'Qualquer dúvida ou informação, consulte nossa equipe de atendimento no balcão. Desejamos ótimas compras!',
+            audioUrl: ''
+        };
+
+        try {
+            const salvo = localStorage.getItem(CHAVE_CFG_LOJA);
+            if (salvo) cfgLoja = Object.assign(cfgLoja, JSON.parse(salvo));
+        } catch (_) {}
+
+        let vinhetaEmExecucao = false;
+        let segundosRestantesVinheta = (parseInt(cfgLoja.intervaloMin, 10) || 15) * 60;
+        let audioVinhetaEl = null;
+        let indiceMsgRotativa = 0;
+
+        function aplicarDadosLojaUI() {
+            const elNome = document.getElementById('lblNomeLoja');
+            if (elNome) elNome.textContent = cfgLoja.nome || 'Minha Loja • Rádio Corporativa';
+            const inputNome = document.getElementById('cfgLojaNome');
+            if (inputNome) inputNome.value = cfgLoja.nome || '';
+            const selIntervalo = document.getElementById('cfgLojaIntervalo');
+            if (selIntervalo) selIntervalo.value = String(cfgLoja.intervaloMin || 15);
+            const selDucking = document.getElementById('cfgLojaDucking');
+            if (selDucking) selDucking.value = String(cfgLoja.duckingVol || 0.15);
+            const txtMsg1 = document.getElementById('cfgLojaMsg1');
+            if (txtMsg1) txtMsg1.value = cfgLoja.msg1 || '';
+            const txtMsg2 = document.getElementById('cfgLojaMsg2');
+            if (txtMsg2) txtMsg2.value = cfgLoja.msg2 || '';
+            const inputAudio = document.getElementById('cfgLojaAudioUrl');
+            if (inputAudio) inputAudio.value = cfgLoja.audioUrl || '';
+        }
+
+        function abrirModalVinhetas() {
+            aplicarDadosLojaUI();
+            document.getElementById('modalVinhetasLoja').classList.add('open');
+        }
+
+        function fecharModalVinhetas() {
+            document.getElementById('modalVinhetasLoja').classList.remove('open');
+        }
+
+        function salvarConfigLoja() {
+            cfgLoja.nome = (document.getElementById('cfgLojaNome').value || '').trim() || 'Minha Loja • Rádio Corporativa';
+            cfgLoja.intervaloMin = parseInt(document.getElementById('cfgLojaIntervalo').value, 10) || 15;
+            cfgLoja.duckingVol = parseFloat(document.getElementById('cfgLojaDucking').value) || 0.15;
+            cfgLoja.msg1 = (document.getElementById('cfgLojaMsg1').value || '').trim();
+            cfgLoja.msg2 = (document.getElementById('cfgLojaMsg2').value || '').trim();
+            cfgLoja.audioUrl = (document.getElementById('cfgLojaAudioUrl').value || '').trim();
+
+            try { localStorage.setItem(CHAVE_CFG_LOJA, JSON.stringify(cfgLoja)); } catch (_) {}
+            aplicarDadosLojaUI();
+            reiniciarTimerVinheta();
+            fecharModalVinhetas();
+            mostrarAviso('💾 Configurações da loja salvas com sucesso!');
+        }
+
+        function atualizarRelogioLoja() {
+            const elRelogio = document.getElementById('relogioLoja');
+            const elData = document.getElementById('dataLoja');
+            if (!elRelogio || !elData) return;
+            const agora = new Date();
+            elRelogio.textContent = agora.toLocaleTimeString('pt-BR');
+            elData.textContent = agora.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+        }
+        setInterval(atualizarRelogioLoja, 1000);
+
+        function reiniciarTimerVinheta() {
+            segundosRestantesVinheta = (parseInt(cfgLoja.intervaloMin, 10) || 15) * 60;
+            atualizarDisplayTimerVinheta();
+        }
+
+        function atualizarDisplayTimerVinheta() {
+            const lbl = document.getElementById('timerProximaVinheta');
+            if (!lbl) return;
+            const m = Math.floor(segundosRestantesVinheta / 60);
+            const s = segundosRestantesVinheta % 60;
+            lbl.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            const lblStatus = document.getElementById('lblStatusVinheta');
+            if (lblStatus && !vinhetaEmExecucao) {
+                lblStatus.innerHTML = 'Próximo anúncio da loja em: <strong id="timerProximaVinheta">' + lbl.textContent + '</strong>';
+            }
+        }
+
+        function suavizarVolume(audioTarget, volFinal, duracaoMs, callback) {
+            const steps = 15;
+            const stepTime = duracaoMs / steps;
+            const volInicial = audioTarget.volume;
+            const diff = volFinal - volInicial;
+            let curStep = 0;
+            const iv = setInterval(() => {
+                curStep++;
+                audioTarget.volume = Math.max(0, Math.min(1, volInicial + (diff * (curStep / steps))));
+                if (curStep >= steps) {
+                    clearInterval(iv);
+                    audioTarget.volume = Math.max(0, Math.min(1, volFinal));
+                    if (callback) callback();
+                }
+            }, stepTime);
+        }
+
+        function falarLocutorVirtual(texto, callbackFim) {
+            if (!('speechSynthesis' in window)) {
+                setTimeout(callbackFim, 3500);
+                return;
+            }
+            try {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(texto);
+                u.lang = 'pt-BR';
+                u.rate = 1.0;
+                u.pitch = 1.0;
+                const vozes = window.speechSynthesis.getVoices();
+                const vozPt = vozes.find(v => v.lang.includes('pt-BR') || v.lang.includes('pt_BR') || v.lang.includes('pt'));
+                if (vozPt) u.voice = vozPt;
+                u.onend = callbackFim;
+                u.onerror = callbackFim;
+                window.speechSynthesis.speak(u);
+            } catch (_) {
+                callbackFim();
+            }
+        }
+
+        function obterProximaMensagem() {
+            const msgs = [cfgLoja.msg1, cfgLoja.msg2].filter(m => m && m.trim());
+            if (!msgs.length) return 'Atenção clientes! Sejam muito bem-vindos à nossa loja. Desejamos uma excelente experiência e ótimas compras!';
+            const msg = msgs[indiceMsgRotativa % msgs.length];
+            indiceMsgRotativa++;
+            return msg;
+        }
+
+        function dispararVinheta(textoForcado) {
+            if (vinhetaEmExecucao) return;
+            vinhetaEmExecucao = true;
+
+            const duckVol = Number(cfgLoja.duckingVol != null ? cfgLoja.duckingVol : 0.15);
+            const volOriginal = audio.volume;
+
+            const badge = document.getElementById('badgeVinhetaPulso');
+            const lblStatus = document.getElementById('lblStatusVinheta');
+            if (badge) { badge.style.color = '#f59e0b'; badge.textContent = '📢'; }
+            if (lblStatus) lblStatus.innerHTML = '<span style="color:#f59e0b; font-weight:800; letter-spacing:0.04em;">📢 ANÚNCIO DA LOJA NO AR...</span>';
+            mostrarAviso('📢 Transmitindo anúncio da loja (Volume atenuado)');
+
+            suavizarVolume(audio, isNaN(duckVol) ? 0.15 : duckVol, 600, () => {
+                const finalizarVinheta = () => {
+                    suavizarVolume(audio, volOriginal, 700, () => {
+                        vinhetaEmExecucao = false;
+                        if (badge) { badge.style.color = 'var(--emerald)'; badge.textContent = '●'; }
+                        reiniciarTimerVinheta();
+                        mostrarAviso('✅ Rádio voltou ao volume normal');
+                    });
+                };
+
+                if (cfgLoja.audioUrl && cfgLoja.audioUrl.trim().startsWith('http')) {
+                    if (!audioVinhetaEl) audioVinhetaEl = new Audio();
+                    audioVinhetaEl.src = cfgLoja.audioUrl.trim();
+                    audioVinhetaEl.onended = finalizarVinheta;
+                    audioVinhetaEl.onerror = () => {
+                        falarLocutorVirtual(textoForcado || obterProximaMensagem(), finalizarVinheta);
+                    };
+                    audioVinhetaEl.play().catch(() => {
+                        falarLocutorVirtual(textoForcado || obterProximaMensagem(), finalizarVinheta);
+                    });
+                } else {
+                    falarLocutorVirtual(textoForcado || obterProximaMensagem(), finalizarVinheta);
+                }
+            });
+        }
+
+        function dispararVinhetaManual() {
+            dispararVinheta();
+        }
+
+        function testarVinhetaAgora() {
+            const msg = (document.getElementById('cfgLojaMsg1').value || '').trim() || 'Atenção clientes! Este é um teste da vinheta automática com atenuação de som.';
+            dispararVinheta(msg);
+        }
+
         function alternarModoLoja() {
             const on = document.body.classList.toggle('loja-mode');
             const btn = document.getElementById('btnLojaMode');
-            btn.classList.toggle('active', on);
-            btn.textContent = on ? '🔓 Destravar' : '🏪 Modo Loja';
-            mostrarAviso(on ? '🏪 Tela travada para som ambiente da loja' : 'Lista liberada');
+            if (btn) {
+                btn.classList.toggle('active', on);
+                btn.textContent = on ? '🔓 Destravar Balcão' : '🏪 Modo Loja';
+            }
+            const painel = document.getElementById('painelLojaBalcao');
+            if (painel) painel.style.display = on ? 'block' : 'none';
+            if (on) {
+                aplicarDadosLojaUI();
+                reiniciarTimerVinheta();
+                atualizarRelogioLoja();
+                mostrarAviso('🏪 Modo Loja Ativo: Tela travada e vinhetas programadas!');
+            } else {
+                mostrarAviso('Lista de rádios liberada');
+            }
         }
+
+        // Timer de 1 segundo para o Modo Loja
+        setInterval(() => {
+            if (document.body.classList.contains('loja-mode') && !vinhetaEmExecucao) {
+                if (segundosRestantesVinheta > 0) {
+                    segundosRestantesVinheta--;
+                    atualizarDisplayTimerVinheta();
+                } else {
+                    dispararVinheta();
+                }
+            }
+        }, 1000);
+
+        // Inicializa dados e relógio
+        aplicarDadosLojaUI();
 
         function abrirModalRadio() { document.getElementById('addModal').classList.add('open'); }
         function fecharModalRadio() { document.getElementById('addModal').classList.remove('open'); }
