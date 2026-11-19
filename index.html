@@ -769,34 +769,50 @@
                 </label>
             </div>
 
-            <!-- SELEÇÃO DE VINHETAS DE LOCUTOR FM ANIMADO -->
+            <!-- SELEÇÃO DE VINHETAS DE LOCUTOR FM SUPER ALEGRE -->
             <div style="border-top:1px solid var(--border); padding-top:12px;">
                 <div style="font-size:12px; font-weight:800; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
-                    🎙️ Vinhetas de Locutor FM Animado (Vozes Reais de Alta Energia):
+                    🎉 Vinhetas de Locutores Super Alegres & Contagiantes:
                 </div>
-                <div style="display:flex; flex-direction:column; gap:8px; background:var(--bg-base); border:1px solid var(--border-strong); border-radius:10px; padding:10px 12px;">
+                <div style="display:flex; flex-direction:column; gap:8px; background:var(--bg-base); border:1px solid var(--border-strong); border-radius:10px; padding:10px 12px; max-height:220px; overflow-y:auto;">
                     <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
                         <span style="display:flex; align-items:center; gap:8px;">
-                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_ofertas.mp3" checked onchange="selecionarVinhetaPronta(this.value)">
-                            🛍️ <strong>Ofertas e Descontos</strong> (Locutor Antonio - Enérgico)
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_alegre_francisca.mp3" checked onchange="selecionarVinhetaPronta(this.value)">
+                            🎉 <strong>"Oieee! Que alegria..."</strong> (Francisca - Super Alegre)
                         </span>
-                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_ofertas.mp3')">▶ Ouvir</button>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_alegre_francisca.mp3')">▶ Ouvir</button>
                     </label>
                     
                     <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
                         <span style="display:flex; align-items:center; gap:8px;">
-                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_radiopro_brasil.mp3" onchange="selecionarVinhetaPronta(this.value)">
-                            📻 <strong>Identificação RádioPro</strong> (Locutor Antonio - Estilo FM)
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_alegre_antonio.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            🚀 <strong>"Eeeei, olha que maravilha..."</strong> (Antonio - Festivo)
                         </span>
-                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_radiopro_brasil.mp3')">▶ Ouvir</button>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_alegre_antonio.mp3')">▶ Ouvir</button>
                     </label>
 
                     <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
                         <span style="display:flex; align-items:center; gap:8px;">
-                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_boas_vindas.mp3" onchange="selecionarVinhetaPronta(this.value)">
-                            👋 <strong>Boas-vindas & Atendimento</strong> (Locutora Thalita - Acolhedora)
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_alegre_thalita.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            ☀️ <strong>"Olááá! Sorria..."</strong> (Thalita - Sorridente & Doce)
                         </span>
-                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_boas_vindas.mp3')">▶ Ouvir</button>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_alegre_thalita.mp3')">▶ Ouvir</button>
+                    </label>
+
+                    <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_ofertas.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            🛍️ <strong>"Atenção clientes! Ofertas..."</strong> (Antonio - Varejo)
+                        </span>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_ofertas.mp3')">▶ Ouvir</button>
+                    </label>
+
+                    <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_radiopro_brasil.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            📻 <strong>"Você está na RádioPro..."</strong> (Antonio - Rádio FM)
+                        </span>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_radiopro_brasil.mp3')">▶ Ouvir</button>
                     </label>
                 </div>
             </div>
@@ -808,7 +824,7 @@
                 
                 <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
                     Link de Áudio Próprio (.mp3 / URL de vinheta gravada):
-                    <input type="url" id="cfgLojaAudioUrl" class="modal-input" placeholder="./vinhetas/vinheta_ofertas.mp3" value="./vinhetas/vinheta_ofertas.mp3">
+                    <input type="url" id="cfgLojaAudioUrl" class="modal-input" placeholder="./vinhetas/vinheta_alegre_francisca.mp3" value="./vinhetas/vinheta_alegre_francisca.mp3">
                 </label>
 
                 <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
@@ -1084,7 +1100,7 @@
             duckingVol: 0.15,
             msg1: 'Atenção clientes! Sejam muito bem-vindos à nossa loja. Aproveitem nossas ofertas especiais de hoje!',
             msg2: 'Qualquer dúvida ou informação, consulte nossa equipe de atendimento no balcão. Desejamos ótimas compras!',
-            audioUrl: './vinhetas/vinheta_ofertas.mp3'
+            audioUrl: './vinhetas/vinheta_alegre_francisca.mp3'
         };
 
         try {
@@ -1109,7 +1125,7 @@
             const txtMsg1 = document.getElementById('cfgLojaMsg1');
             if (txtMsg1) txtMsg1.value = cfgLoja.msg1 || '';
             const inputAudio = document.getElementById('cfgLojaAudioUrl');
-            if (inputAudio) inputAudio.value = cfgLoja.audioUrl || './vinhetas/vinheta_ofertas.mp3';
+            if (inputAudio) inputAudio.value = cfgLoja.audioUrl || './vinhetas/vinheta_alegre_francisca.mp3';
         }
 
         function selecionarVinhetaPronta(url) {
