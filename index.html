@@ -769,22 +769,51 @@
                 </label>
             </div>
 
+            <!-- SELEÇÃO DE VINHETAS DE LOCUTOR FM ANIMADO -->
             <div style="border-top:1px solid var(--border); padding-top:12px;">
-                <div style="font-size:12px; font-weight:800; color:#34d399; margin-bottom:8px; display:flex; align-items:center; gap:6px;">🎙️ Locutor Virtual IA (Text-to-Speech Gratuito):</div>
+                <div style="font-size:12px; font-weight:800; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    🎙️ Vinhetas de Locutor FM Animado (Vozes Reais de Alta Energia):
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px; background:var(--bg-base); border:1px solid var(--border-strong); border-radius:10px; padding:10px 12px;">
+                    <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_ofertas.mp3" checked onchange="selecionarVinhetaPronta(this.value)">
+                            🛍️ <strong>Ofertas e Descontos</strong> (Locutor Antonio - Enérgico)
+                        </span>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_ofertas.mp3')">▶ Ouvir</button>
+                    </label>
+                    
+                    <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_radiopro_brasil.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            📻 <strong>Identificação RádioPro</strong> (Locutor Antonio - Estilo FM)
+                        </span>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_radiopro_brasil.mp3')">▶ Ouvir</button>
+                    </label>
+
+                    <label style="display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#f1f5f9; cursor:pointer;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <input type="radio" name="vinhetaPredefinida" value="./vinhetas/vinheta_boas_vindas.mp3" onchange="selecionarVinhetaPronta(this.value)">
+                            👋 <strong>Boas-vindas & Atendimento</strong> (Locutora Thalita - Acolhedora)
+                        </span>
+                        <button type="button" class="btn" style="padding:3px 10px; font-size:11px; background:#1e293b;" onclick="ouvirPreviaVinheta('./vinhetas/vinheta_boas_vindas.mp3')">▶ Ouvir</button>
+                    </label>
+                </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border); padding-top:12px;">
+                <div style="font-size:12px; font-weight:800; color:#34d399; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    📝 Ou Texto Próprio / Link Customizado:
+                </div>
                 
                 <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                    Mensagem 1 (Boas-vindas / Ofertas):
-                    <textarea id="cfgLojaMsg1" class="modal-input" rows="2" placeholder="Ex: Atenção clientes! Sejam muito bem-vindos. Aproveitem nossas ofertas especiais de hoje!"></textarea>
+                    Link de Áudio Próprio (.mp3 / URL de vinheta gravada):
+                    <input type="url" id="cfgLojaAudioUrl" class="modal-input" placeholder="./vinhetas/vinheta_ofertas.mp3" value="./vinhetas/vinheta_ofertas.mp3">
                 </label>
 
                 <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
-                    Mensagem 2 (Atendimento / Fidelidade):
-                    <textarea id="cfgLojaMsg2" class="modal-input" rows="2" placeholder="Ex: Qualquer dúvida, consulte nossa equipe de atendimento no balcão. Desejamos ótimas compras!"></textarea>
-                </label>
-                
-                <label style="font-size:11.5px; color:#94a3b8; display:flex; flex-direction:column; gap:4px;">
-                    Ou Link de Áudio Próprio (.mp3 / URL de vinheta gravada):
-                    <input type="url" id="cfgLojaAudioUrl" class="modal-input" placeholder="https://seusite.com/vinheta.mp3 (Opcional)">
+                    Mensagem de Texto (Caso prefira o sintetizador de voz):
+                    <textarea id="cfgLojaMsg1" class="modal-input" rows="2" placeholder="Ex: Atenção clientes! Aproveitem nossas ofertas do dia."></textarea>
                 </label>
             </div>
 
@@ -1055,7 +1084,7 @@
             duckingVol: 0.15,
             msg1: 'Atenção clientes! Sejam muito bem-vindos à nossa loja. Aproveitem nossas ofertas especiais de hoje!',
             msg2: 'Qualquer dúvida ou informação, consulte nossa equipe de atendimento no balcão. Desejamos ótimas compras!',
-            audioUrl: ''
+            audioUrl: './vinhetas/vinheta_ofertas.mp3'
         };
 
         try {
@@ -1079,10 +1108,30 @@
             if (selDucking) selDucking.value = String(cfgLoja.duckingVol || 0.15);
             const txtMsg1 = document.getElementById('cfgLojaMsg1');
             if (txtMsg1) txtMsg1.value = cfgLoja.msg1 || '';
-            const txtMsg2 = document.getElementById('cfgLojaMsg2');
-            if (txtMsg2) txtMsg2.value = cfgLoja.msg2 || '';
             const inputAudio = document.getElementById('cfgLojaAudioUrl');
-            if (inputAudio) inputAudio.value = cfgLoja.audioUrl || '';
+            if (inputAudio) inputAudio.value = cfgLoja.audioUrl || './vinhetas/vinheta_ofertas.mp3';
+        }
+
+        function selecionarVinhetaPronta(url) {
+            const input = document.getElementById('cfgLojaAudioUrl');
+            if (input) input.value = url;
+            cfgLoja.audioUrl = url;
+            try { localStorage.setItem(CHAVE_CFG_LOJA, JSON.stringify(cfgLoja)); } catch (_) {}
+            mostrarAviso('🎧 Vinheta de locutor selecionada!');
+        }
+
+        let audioPrevia = null;
+        function ouvirPreviaVinheta(url) {
+            if (audioPrevia) {
+                audioPrevia.pause();
+                audioPrevia = null;
+            }
+            audioPrevia = new Audio(url);
+            audioPrevia.volume = 1.0;
+            audioPrevia.play().catch(() => {
+                mostrarAviso('⚠️ Erro ao reproduzir prévia');
+            });
+            mostrarAviso('🎧 Tocando prévia do locutor animado...');
         }
 
         function abrirModalVinhetas() {
@@ -1206,9 +1255,16 @@
                     });
                 };
 
-                if (cfgLoja.audioUrl && cfgLoja.audioUrl.trim().startsWith('http')) {
+                const temAudioMp3 = cfgLoja.audioUrl && (
+                    cfgLoja.audioUrl.trim().startsWith('http') || 
+                    cfgLoja.audioUrl.trim().startsWith('./') || 
+                    cfgLoja.audioUrl.trim().includes('.mp3')
+                );
+
+                if (temAudioMp3) {
                     if (!audioVinhetaEl) audioVinhetaEl = new Audio();
                     audioVinhetaEl.src = cfgLoja.audioUrl.trim();
+                    audioVinhetaEl.volume = 1.0;
                     audioVinhetaEl.onended = finalizarVinheta;
                     audioVinhetaEl.onerror = () => {
                         falarLocutorVirtual(textoForcado || obterProximaMensagem(), finalizarVinheta);
