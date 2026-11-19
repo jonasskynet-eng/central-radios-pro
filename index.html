@@ -7,6 +7,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
+    <link rel="dns-prefetch" href="https://playerservices.streamtheworld.com">
+    <link rel="dns-prefetch" href="https://listen.181fm.com">
+    <link rel="dns-prefetch" href="https://live.hunter.fm">
+    <link rel="dns-prefetch" href="https://stream.vagalume.fm">
+    <link rel="preconnect" href="https://cinepro-tv-proxy.jonasskynet.workers.dev" crossorigin>
     <title>RádioPro Brasil • Central de Rádios & Som Ambiente</title>
     <style>
         :root {
@@ -352,6 +357,8 @@
             gap: 10px;
             cursor: pointer;
             transition: background-color 0.15s ease, border-color 0.15s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: 60px;
         }
         .station-card:hover {
             background: var(--bg-elevated);
@@ -1096,6 +1103,15 @@
         window.addEventListener('offline', () => {
             mostrarAviso('⚠️ Sem internet no momento. Aguardando conexão...');
             atualizarUIEstado(false, 'Sem sinal de rede');
+        });
+
+        // Otimizador ultra-leve de CPU e bateria para tela/aba em segundo plano
+        document.addEventListener('visibilitychange', () => {
+            const eq = document.getElementById('eqWave');
+            if (eq) {
+                const anims = eq.querySelectorAll('span');
+                anims.forEach(s => s.style.animationPlayState = document.hidden ? 'paused' : 'running');
+            }
         });
 
         function alternarPlay() {
