@@ -989,12 +989,94 @@
                             + '<a href="https://wa.me/5511966707293?text=' + encodeURIComponent('Olá Jonas! Meu teste termina em ' + tempoTxt + ' e quero garantir meu acesso.') + '" target="_blank" style="background:#0c0e12;color:#34d399;font-weight:800;padding:6px 14px;border-radius:99px;text-decoration:none;font-size:12px;">💬 Chamar no WhatsApp ↗</a>'
                             + '<button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:15px;color:#0f131a;padding:0 4px;font-weight:bold;" title="Dispensar aviso">✕</button>';
                     }
+
+                    // Mensagem administrativa direta transmitida para as telas
+                    if (data.mensagem_admin && !bloqueioExibido) {
+                        const m = data.mensagem_admin;
+                        const chaveDisp = 'radiopro_msg_dispensada_' + m.id;
+                        let jaDispensou = false;
+                        try { jaDispensou = sessionStorage.getItem(chaveDisp) === '1'; } catch (_) {}
+                        if (!jaDispensou) {
+                            let cardMsg = document.getElementById('cardMsgAdminTelas');
+                            if (!cardMsg) {
+                                cardMsg = document.createElement('div');
+                                cardMsg.id = 'cardMsgAdminTelas';
+                                cardMsg.style.cssText = 'position:fixed;top:24px;right:24px;z-index:99996;background:#151922;border:1px solid rgba(52,211,153,0.4);border-radius:14px;padding:16px 20px;max-width:340px;color:#f3f5f8;box-shadow:0 12px 35px rgba(0,0,0,0.7);font-family:system-ui,-apple-system,sans-serif;';
+                                document.body.appendChild(cardMsg);
+                            }
+                            cardMsg.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">'
+                                + '<span style="font-weight:700;font-size:14px;color:#34d399;display:flex;align-items:center;gap:6px;">💬 Suporte Jonas</span>'
+                                + '<button type="button" onclick="try{sessionStorage.setItem(\'' + chaveDisp + '\',\'1\')}catch(_){}; this.closest(\'#cardMsgAdminTelas\').remove();" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px;padding:0 4px;" title="Fechar">✕</button>'
+                                + '</div>'
+                                + '<p style="font-size:13px;line-height:1.45;margin:0 0 12px 0;color:#e2e8f0;">' + m.texto + '</p>'
+                                + '<a href="' + (m.link || 'https://wa.me/5511966707293') + '" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#34d399;color:#06281c;font-weight:700;padding:8px 14px;border-radius:8px;text-decoration:none;font-size:13px;box-shadow:0 4px 12px rgba(52,211,153,0.3);">💬 Falar com Jonas no WhatsApp ↗</a>';
+                        }
+                    } else if (!data.mensagem_admin) {
+                        const cardMsg = document.getElementById('cardMsgAdminTelas');
+                        if (cardMsg) cardMsg.remove();
+                    }
                 })
                 .catch(() => {});
             }
 
+            // --- ENQUETE DE SATISFAÇÃO PERIÓDICA (A CADA 1 HORA) ---
+            const INTERVALO_ENQUETE_MS = 60 * 60 * 1000;
+            const URL_ENQUETE = 'https://cinepro-tv-proxy.jonasskynet.workers.dev/api/enquete';
+
+            function exibirModalEnquete() {
+                if (document.getElementById('modalEnqueteSatisfacao') || bloqueioExibido) return;
+                const modal = document.createElement('div');
+                modal.id = 'modalEnqueteSatisfacao';
+                modal.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99997;background:#151922;border:1px solid rgba(52,211,153,0.3);box-shadow:0 12px 40px rgba(0,0,0,0.7);border-radius:14px;padding:16px 20px;max-width:320px;font-family:system-ui,-apple-system,sans-serif;color:#f3f5f8;';
+                modal.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">'
+                    + '<span style="font-weight:700;font-size:14px;color:#34d399;display:flex;align-items:center;gap:6px;">✨ Opinião Rápida</span>'
+                    + '<button type="button" onclick="this.closest(\'#modalEnqueteSatisfacao\').remove()" style="background:none;border:none;color:#98a3b6;cursor:pointer;font-size:16px;padding:0 4px;" title="Fechar">✕</button>'
+                    + '</div>'
+                    + '<p style="font-size:13px;line-height:1.4;margin:0 0 12px 0;color:#cbd5e1;">Você está ouvindo há 1 hora. Como está sendo sua experiência com o aplicativo?</p>'
+                    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">'
+                    + '<button type="button" data-resp="Adorei" data-nota="5" style="background:#1e293b;border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;padding:8px 4px;font-size:12px;font-weight:600;cursor:pointer;">😍 Adorei</button>'
+                    + '<button type="button" data-resp="Bom" data-nota="4" style="background:#1e293b;border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;padding:8px 4px;font-size:12px;font-weight:600;cursor:pointer;">👍 Bom</button>'
+                    + '<button type="button" data-resp="Melhorar" data-nota="2" style="background:#1e293b;border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;padding:8px 4px;font-size:12px;font-weight:600;cursor:pointer;">😐 Melhorar</button>'
+                    + '</div>';
+                document.body.appendChild(modal);
+
+                modal.querySelectorAll('button[data-resp]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const resposta = btn.getAttribute('data-resp');
+                        const nota = Number(btn.getAttribute('data-nota') || 5);
+                        fetch(URL_ENQUETE, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                sessao_id: sessaoId,
+                                chave_cliente: chave || 'VISITANTE',
+                                app: 'radiopro',
+                                resposta: resposta,
+                                nota: nota
+                            })
+                        }).catch(() => {});
+                        modal.innerHTML = '<div style="text-align:center;padding:12px 6px;color:#34d399;font-weight:700;font-size:13px;">🙏 Muito obrigado pelo feedback!</div>';
+                        setTimeout(() => { modal.remove(); }, 2500);
+                        localStorage.setItem('radiopro_ultima_enquete_ts', String(Date.now()));
+                    });
+                });
+            }
+
+            function verificarEnquetePeriodica() {
+                const agora = Date.now();
+                const ultima = Number(localStorage.getItem('radiopro_ultima_enquete_ts') || '0');
+                if (!ultima) {
+                    localStorage.setItem('radiopro_ultima_enquete_ts', String(agora));
+                    return;
+                }
+                if (agora - ultima >= INTERVALO_ENQUETE_MS) {
+                    exibirModalEnquete();
+                }
+            }
+
             setTimeout(enviarPing, 2000);
             setInterval(enviarPing, 45000);
+            setInterval(verificarEnquetePeriodica, 60000);
             window.addEventListener('pagehide', () => {
                 if (navigator.sendBeacon && window.location.protocol !== 'file:') {
                     navigator.sendBeacon(URL_PING, montarPayload());
