@@ -633,12 +633,18 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button type="button" class="btn" id="btnLojaConfig" onclick="abrirModalVinhetas()" title="Configurar Vinhetas e Locutor da Loja">📢 Vinhetas</button>
+                <button type="button" class="btn" id="btnStatusProRadio" onclick="abrirModalProRadio('Desbloquear Versão PRO Completa')" style="border-color:#f59e0b; color:#fbbf24; font-weight:700;">🔑 Liberar PRO</button>
+                <button type="button" class="btn" id="btnLojaConfig" onclick="abrirModalVinhetas()" title="Configurar Vinhetas e Locutor da Loja">🔒📢 Vinhetas</button>
                 <button type="button" class="btn" id="btnAddRadio" onclick="abrirModalRadio()">➕ Adicionar</button>
                 <button type="button" class="btn" id="btnSleep" onclick="alternarSleep()">🌙 <span id="sleepText">Dormir</span></button>
-                <button type="button" class="btn" id="btnLojaMode" onclick="alternarModoLoja()" title="Trava a tela para som ambiente em lojas">🏪 Modo Loja</button>
+                <button type="button" class="btn" id="btnLojaMode" onclick="alternarModoLoja()" title="Trava a tela para som ambiente em lojas">🔒🏪 Modo Loja</button>
             </div>
         </header>
+
+        <div id="bannerProRadio" style="margin:0 0 12px; padding:10px 14px; border-radius:12px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.45); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; font-size:13px;">
+            <span id="txtBannerProRadio">⚡ <strong>Versão Básica (Grátis):</strong> 19 rádios abertas • <strong>Academia, Vinhetas e +26 rádios</strong> são exclusivos da Versão PRO.</span>
+            <button type="button" class="btn" id="btnBannerProRadio" onclick="abrirModalProRadio('Acesso Completo RádioPro PRO')" style="border-color:#f59e0b; color:#fbbf24; padding:5px 10px; font-size:12px;">🔑 Pedir Liberação PRO</button>
+        </div>
 
         <section class="tuner-panel" aria-label="Sintonizador principal">
             <div class="tuner-info">
@@ -704,7 +710,7 @@
                 <option value="all">📻 Todos os Estilos (45 Rádios)</option>
                 <option value="fav">⭐ Favoritas</option>
                 <option value="Gospel & Religiosa">⛪ Gospel & Religiosa (10 Rádios)</option>
-                <option value="Academia & Treino">🏋️ Academia & Treino Agitado</option>
+                <option value="Academia & Treino">🔒🏋️ Academia & Treino (PRO)</option>
                 <option value="Pop & Hits">🎵 Pop & Hits</option>
                 <option value="Rock & Flashback">🎸 Rock & Flashback</option>
                 <option value="Sertanejo & Popular">🤠 Sertanejo & Forró</option>
@@ -727,7 +733,7 @@
             <input type="url" id="customUrl" class="modal-input" placeholder="Link HTTPS (.mp3, .aac ou .m3u8)">
             <select id="customStyle" class="modal-input">
                 <option value="Gospel & Religiosa">⛪ Gospel & Religiosa</option>
-                <option value="Academia & Treino">🏋️ Academia & Treino Agitado</option>
+                <option value="Academia & Treino">🔒🏋️ Academia & Treino (PRO)</option>
                 <option value="Pop & Hits">🎵 Pop & Hits</option>
                 <option value="Jornalismo">📰 Jornalismo</option>
                 <option value="Rock & Flashback">🎸 Rock & Flashback</option>
@@ -857,6 +863,35 @@
         </div>
     </div>
 
+    <!-- MODAL DE LIBERAÇÃO DE ACESSO PRO (RÁDIOPRO) -->
+    <div id="modalProRadio" class="modal-bg">
+        <div class="modal-card" style="max-width:480px;">
+            <div class="modal-title" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>🔑 Liberar Acesso PRO — RádioPro</span>
+                <button type="button" onclick="fecharModalProRadio()" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+            </div>
+            <p id="motivoProRadio" style="font-size:13px; color:#fbbf24; margin:0 0 10px; font-weight:600;"></p>
+            <div style="background:rgba(15,23,42,0.55); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; font-size:12.5px; line-height:1.55; margin-bottom:12px;">
+                <div>✅ <strong>Versão Básica (Grátis):</strong> 19 rádios FM/Web liberadas agora.</div>
+                <div style="color:#34d399; margin-top:4px;">👑 <strong>Versão PRO (Completa):</strong></div>
+                <div>• Todas as <strong>45 rádios ao vivo</strong> (100% destravadas)</div>
+                <div>• Todas as rádios de <strong>🏋️ Academia &amp; Treino</strong></div>
+                <div>• <strong>📢 Vinhetas Comerciais + Locutor Virtual + 🏪 Modo Loja</strong></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+                <input type="text" id="proRadioNomeCliente" class="search-input" placeholder="Seu Nome ou Nome da Loja / Academia" style="width:100%;">
+                <button type="button" class="btn active" onclick="pedirLiberacaoProRadioWhatsApp()" style="width:100%; justify-content:center; padding:10px;">💬 Pedir Liberação PRO ao Jonas no WhatsApp</button>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:12px;">
+                <label style="display:block; font-size:12px; color:#94a3b8; margin-bottom:6px;">Já recebeu sua chave PRO do Jonas? Digite abaixo:</label>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="inputChaveProRadio" class="search-input" placeholder="Ex.: RPRO-XXXX-XXXX" style="flex:1; text-transform:uppercase;">
+                    <button type="button" class="btn" onclick="ativarChaveProRadio()" style="border-color:#34d399; color:#34d399; font-weight:700;">🔓 Ativar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="toast" class="toast"></div>
     <audio id="audioPlayer" preload="none" crossorigin="anonymous"></audio>
 
@@ -912,6 +947,99 @@
         const CHAVE_FAV = 'radiopro_favs_v1';
         const CHAVE_ULTIMA = 'radiopro_ultima_v1';
         const CHAVE_CUSTOM = 'radiopro_custom_v1';
+        const CHAVE_PRO_RADIO = 'radiopro_licenca_pro_v1';
+        // Metade das radios gerais liberadas gratis (19 abertas); TODAS as de Academia + outra metade (26 radios) + Vinhetas = PRO
+        const RADIOS_GRATIS_IDS = new Set([1, 2, 4, 5, 8, 9, 12, 13, 14, 16, 17, 19, 20, 24, 26, 27, 28, 39, 40]);
+        let motivoAtualProRadio = 'Acesso Completo RádioPro PRO';
+
+        function validarChaveProRadio(chRaw) {
+            const ch = String(chRaw || '').trim().toUpperCase();
+            const m = ch.match(/^RPRO-([A-Z0-9]{4})-(\d{4})$/);
+            if (!m) return false;
+            let soma = 0;
+            for (let i = 0; i < m[1].length; i++) soma = (soma + m[1].charCodeAt(i) * (i + 11)) % 9973;
+            return String(soma).padStart(4, '0') === m[2];
+        }
+
+        function acessoProRadioAtivo() {
+            try {
+                const salva = localStorage.getItem(CHAVE_PRO_RADIO) || '';
+                return validarChaveProRadio(salva);
+            } catch (_) { return false; }
+        }
+
+        function ehRadioBloqueadaPro(r) {
+            if (!r) return false;
+            if (acessoProRadioAtivo()) return false;
+            if (r.id > 1000) return false;
+            if (r.estilo === 'Academia & Treino') return true;
+            return !RADIOS_GRATIS_IDS.has(r.id);
+        }
+
+        function atualizarUiProRadio() {
+            const pro = acessoProRadioAtivo();
+            const btnStatus = document.getElementById('btnStatusProRadio');
+            const btnVin = document.getElementById('btnLojaConfig');
+            const btnLoja = document.getElementById('btnLojaMode');
+            const banner = document.getElementById('bannerProRadio');
+            const txtBanner = document.getElementById('txtBannerProRadio');
+            const btnBanner = document.getElementById('btnBannerProRadio');
+            if (btnStatus) {
+                btnStatus.textContent = pro ? '👑 PRO Ativo' : '🔑 Liberar PRO';
+                btnStatus.style.borderColor = pro ? '#34d399' : '#f59e0b';
+                btnStatus.style.color = pro ? '#34d399' : '#fbbf24';
+            }
+            if (btnVin) btnVin.textContent = pro ? '📢 Vinhetas' : '🔒📢 Vinhetas';
+            if (btnLoja && !document.body.classList.contains('loja-mode')) {
+                btnLoja.textContent = pro ? '🏪 Modo Loja' : '🔒🏪 Modo Loja';
+            }
+            if (banner && txtBanner && btnBanner) {
+                if (pro) {
+                    banner.style.background = 'rgba(16,185,129,0.14)';
+                    banner.style.borderColor = 'rgba(52,211,153,0.55)';
+                    txtBanner.innerHTML = '🎉 <strong>Acesso PRO Liberado por Jonas Mendonça!</strong> Todas as 45 rádios, Academia &amp; Treino e Vinhetas de Loja estão destravadas.';
+                    btnBanner.style.display = 'none';
+                } else {
+                    banner.style.background = 'rgba(245,158,11,0.12)';
+                    banner.style.borderColor = 'rgba(245,158,11,0.45)';
+                    txtBanner.innerHTML = '⚡ <strong>Versão Básica (Grátis):</strong> 19 rádios abertas • <strong>Academia, Vinhetas e +26 rádios</strong> são exclusivos da Versão PRO.';
+                    btnBanner.style.display = 'inline-flex';
+                }
+            }
+        }
+
+        function abrirModalProRadio(motivo) {
+            motivoAtualProRadio = motivo || 'Acesso Completo RádioPro PRO';
+            const el = document.getElementById('motivoProRadio');
+            if (el) el.textContent = '🔒 Recurso exclusivo PRO: ' + motivoAtualProRadio;
+            const mod = document.getElementById('modalProRadio');
+            if (mod) mod.classList.add('open');
+        }
+
+        function fecharModalProRadio() {
+            const mod = document.getElementById('modalProRadio');
+            if (mod) mod.classList.remove('open');
+        }
+
+        function pedirLiberacaoProRadioWhatsApp() {
+            const nome = (document.getElementById('proRadioNomeCliente')?.value || '').trim() || 'Cliente RádioPro';
+            const msg = `Olá Jonas! Sou ${nome} e quero pedir a liberação da Versão PRO da Web Rádio (RádioPro)!\n• Recurso que tentei abrir: ${motivoAtualProRadio}\nQuero liberar todas as 45 rádios, Academia e Vinhetas de Loja.`;
+            window.open('https://wa.me/5511966707293?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        }
+
+        function ativarChaveProRadio(chaveManual) {
+            const ch = String(chaveManual || document.getElementById('inputChaveProRadio')?.value || '').trim().toUpperCase();
+            if (!validarChaveProRadio(ch)) {
+                mostrarAviso('❌ Chave PRO inválida! Peça sua chave ao Jonas no WhatsApp (11) 96670-7293.');
+                return false;
+            }
+            try { localStorage.setItem(CHAVE_PRO_RADIO, ch); } catch (_) {}
+            atualizarUiProRadio();
+            renderizarLista();
+            fecharModalProRadio();
+            mostrarAviso('🎉 Acesso PRO Liberado! Todas as 45 rádios, Academia e Vinhetas desbloqueadas!');
+            return true;
+        }
 
         const audio = document.getElementById('audioPlayer');
         let hlsInst = null;
@@ -977,6 +1105,17 @@
             if (!radios.length) return;
             if (idx < 0) idx = radios.length - 1;
             if (idx >= radios.length) idx = 0;
+
+            const alvo = radios[idx];
+            if (ehRadioBloqueadaPro(alvo)) {
+                if (tentarAutoPlay) {
+                    abrirModalProRadio(`Rádio ${alvo.nome} (${alvo.estilo})`);
+                    return;
+                }
+                const primeiroLivre = radios.findIndex(item => !ehRadioBloqueadaPro(item));
+                if (primeiroLivre >= 0) idx = primeiroLivre;
+            }
+
             atualIdx = idx;
             usandoReserva = !!usarRes;
 
@@ -1253,6 +1392,10 @@
 
         let audioPrevia = null;
         function ouvirPreviaVinheta(url) {
+            if (!acessoProRadioAtivo()) {
+                abrirModalProRadio('Prévia e Vinhetas de Locutor Comercial');
+                return;
+            }
             if (audioPrevia) {
                 audioPrevia.pause();
                 audioPrevia = null;
@@ -1266,6 +1409,10 @@
         }
 
         function abrirModalVinhetas() {
+            if (!acessoProRadioAtivo()) {
+                abrirModalProRadio('Central de Vinhetas Comerciais & Locutor Virtual');
+                return;
+            }
             aplicarDadosLojaUI();
             document.getElementById('modalVinhetasLoja').classList.add('open');
         }
@@ -1364,6 +1511,10 @@
         }
 
         function dispararVinheta(textoForcado) {
+            if (!acessoProRadioAtivo()) {
+                abrirModalProRadio('Disparo de Vinhetas & Anúncios de Loja');
+                return;
+            }
             if (vinhetaEmExecucao) return;
             vinhetaEmExecucao = true;
 
@@ -1425,6 +1576,10 @@
         }
 
         function alternarModoLoja() {
+            if (!acessoProRadioAtivo() && !document.body.classList.contains('loja-mode')) {
+                abrirModalProRadio('Modo Loja com Vinhetas Automáticas');
+                return;
+            }
             const on = document.body.classList.toggle('loja-mode');
             const btn = document.getElementById('btnLojaMode');
             if (btn) {
@@ -1512,12 +1667,16 @@
             grid.innerHTML = filtradas.map(({ r, i }) => {
                 const isFav = favoritos.includes(r.id);
                 const isAct = i === atualIdx;
+                const bloqueada = ehRadioBloqueadaPro(r);
+                const tagPro = bloqueada
+                    ? '<span style="margin-left:6px; padding:2px 6px; border-radius:999px; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.5); color:#fbbf24; font-size:10px; font-weight:700;">🔒 PRO</span>'
+                    : '';
                 return `
-                    <div class="station-card ${isAct ? 'active' : ''}" onclick="sintonizarRadio(${i}, true, false)">
+                    <div class="station-card ${isAct ? 'active' : ''}" style="${bloqueada ? 'opacity:0.82; border-color:rgba(245,158,11,0.3);' : ''}" onclick="sintonizarRadio(${i}, true, false)">
                         <div class="station-left">
-                            <div class="station-freq-pill">${r.freq}</div>
+                            <div class="station-freq-pill">${bloqueada ? '🔒' : r.freq}</div>
                             <div class="station-text">
-                                <div class="station-title">${r.nome}</div>
+                                <div class="station-title">${r.nome}${tagPro}</div>
                                 <div class="station-sub">${r.estilo} • ${r.cidade}</div>
                             </div>
                         </div>
@@ -1536,7 +1695,12 @@
 
         carregarRadiosTotais();
         const params = new URLSearchParams(window.location.search);
-        if (params.get('loja') === '1') alternarModoLoja();
+        const chaveUrlRadio = (params.get('chave') || '').trim().toUpperCase();
+        if (chaveUrlRadio && validarChaveProRadio(chaveUrlRadio)) {
+            try { localStorage.setItem(CHAVE_PRO_RADIO, chaveUrlRadio); } catch (_) {}
+        }
+        atualizarUiProRadio();
+        if (params.get('loja') === '1' && acessoProRadioAtivo()) alternarModoLoja();
         const ultimaId = parseInt(localStorage.getItem(CHAVE_ULTIMA) || '', 10);
         const startIdx = Number.isFinite(ultimaId) ? Math.max(0, radios.findIndex(r => r.id === ultimaId)) : 0;
         sintonizarRadio(startIdx, false, false);
